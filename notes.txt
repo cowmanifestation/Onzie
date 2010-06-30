@@ -1,0 +1,41 @@
+cards = [7, 8, 2, 10]
+
+
+[7,8, 10]
+[2]
+
+
+
+
+
+
+
+
+
+[7,8,10]
+
+7
+  sorted_cards[0+1] = 7 => OK
+
+  4+1 = 5; 5 != 7
+
+  
+  twos.shift.  OK
+
+7 => OH ok it goes to the next thing in the array, not the next integer value
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
