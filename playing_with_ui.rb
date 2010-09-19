@@ -29,9 +29,32 @@
 #
 # See the note above: laying down cards should include the capability of laying
 # cards down on others' hands as well.
-
-
-
+#
+#
+# Players turns should be created by the game - when you call lay_down on the
+# game it automatically calls it on the current player.
+#
+# For the above to be possible:
+#
+# need current_player method
+#
+# game needs draw_card method which gives current_player a card from deck
+#
+# game needs discard method, which puts card in discard pile, and switches
+# current_player
+#
+# game needs lay_down method, takes cards from current_player's hand, validates
+# the collection, and either raises an error or lays them down on the table
+#
+# lay_down (or play_on()) method needs to be able to add cards to other player's
+# cards on table as well as current_player's.
+#
+# if player discards or lays down a card and their hand becomes empty, they
+# win.
+#
+# score is then taken and recorded; hand number and number of cards to be dealt
+# is increased, or if it's the last hand, the player with the highest score
+# wins.
 
 
 

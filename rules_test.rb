@@ -16,7 +16,7 @@ class RulesTest < Test::Unit::TestCase
   end
 
   def create_run(suit, number_of_cards=4)
-    (1..number_of_cards).map do |v|
+    (3..number_of_cards + 2).map do |v|
       Onzie::Card.new(suit, v.to_s)
     end
   end
@@ -159,11 +159,16 @@ class RulesTest < Test::Unit::TestCase
 
     assert_equal Onzie::Rules.validate_hand(2, set, run),
                  [set, run]
+    assert_equal Onzie::Rules.validate_hand(2, run, set),
+                 [run, set]
+
+    set_2 = create_set("5")
+
+    assert_raises Onzie::Rules::InvalidRunError do
+      Onzie::Rules.validate_hand(2, set, set_2)
+    end
   end
 
-  test "players should be able to enter run and set in any order" do
-  end
-  
   test "third hand must have two runs" do
     run_1 = create_run("h")
     run_2 = create_run("c")
@@ -187,6 +192,8 @@ class RulesTest < Test::Unit::TestCase
 
     assert_equal Onzie::Rules.validate_hand(5, set, run),
                  [set, run]
+    assert_equal Onzie::Rules.validate_hand(5, run, set),
+                 [run, set]
 
     bad_run = %w[ 3 4 5 6 8 9 10 ].map do |v|
       Onzie::Card.new("h", v)
@@ -194,6 +201,9 @@ class RulesTest < Test::Unit::TestCase
 
     assert_raises Onzie::Rules::InvalidRunError do
       Onzie::Rules.validate_hand(5, set, bad_run)
+    end
+    assert_raises Onzie::Rules::InvalidRunError do
+      Onzie::Rules.validate_hand(5, bad_run, set)
     end
   end
 
@@ -204,6 +214,10 @@ class RulesTest < Test::Unit::TestCase
 
     assert_equal Onzie::Rules.validate_hand(6, set, run_1, run_2),
                  [set, run_1, run_2]
+    assert_equal Onzie::Rules.validate_hand(6, run_1, run_2, set),
+                 [run_1, run_2, set]
+    assert_equal Onzie::Rules.validate_hand(6, run_1, set, run_2),
+                 [run_1, set, run_2]
   end
 
   test "seventh hand must have two sets and a run" do
@@ -213,5 +227,9 @@ class RulesTest < Test::Unit::TestCase
 
     assert_equal Onzie::Rules.validate_hand(7, set_1, set_2, run),
                  [set_1, set_2, run]
+    assert_equal Onzie::Rules.validate_hand(7, run, set_1, set_2),
+                 [run, set_1, set_2]
+    assert_equal Onzie::Rules.validate_hand(7, set_1, run, set_2),
+                 [set_1, run, set_2]
   end
 end

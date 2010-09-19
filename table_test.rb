@@ -15,10 +15,10 @@ class TableTest < Test::Unit::TestCase
     players = [player1, player2, player3]
 
     players.each_with_index do |p, i|
-      p.hand = ["card#{i}"]
+      p.cards_in_hand = ["card#{i}"]
       p.lay_down([0])
     end
 
-    assert_equal ["card0"], table.show(player1)
+    assert_equal ["card0"], table.show("#{player1.name}")
   end
 end

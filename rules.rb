@@ -113,9 +113,13 @@ module Onzie
       when 2
         # eight cards
         validate_elements_size(elements, 2)
-
-        validate_set(elements[0])
-        validate_run(elements[1])
+        begin
+          validate_set(elements[0])
+          validate_run(elements[1])
+        rescue InvalidSetError
+          validate_run(elements[0])
+          validate_set(elements[1])
+        end
         return elements
       when 3
         # nine cards
@@ -134,28 +138,58 @@ module Onzie
       when 5
         # eleven cards
         validate_elements_size(elements, 2)
-
-        validate_set(elements[0])
-        validate_big_run(elements[1])
+        begin
+          validate_set(elements[0])
+          validate_big_run(elements[1])
+        rescue InvalidSetError
+          validate_big_run(elements[0])
+          validate_set(elements[1])
+        end
         return elements
       when 6
         # twelve cards
         validate_elements_size(elements, 3)
 
-        validate_set(elements[0])
-        [1, 2].each do |i|
-          validate_run(elements[i])
+        begin
+          validate_set(elements[0])
+          [1, 2].each do |i|
+            validate_run(elements[i])
+          end
+        rescue InvalidSetError
+          begin
+            validate_run(elements[0])
+            validate_run(elements[1])
+            validate_set(elements[2])
+          rescue InvalidRunError
+            validate_run(elements[0])
+            validate_set(elements[1])
+            validate_run(elements[2])
+          end
         end
+
         return elements
       when 7
         # twelve cards
         validate_elements_size(elements, 3)
 
-        [0, 1].each do |i|
-          validate_set(elements[i])
+        begin
+          validate_run(elements[0])
+          [1, 2].each do |i|
+            validate_set(elements[i])
+          end
+        rescue InvalidRunError
+          begin
+            validate_set(elements[0])
+            validate_set(elements[1])
+            validate_run(elements[2])
+          rescue InvalidSetError
+            validate_set(elements[0])
+            validate_run(elements[1])
+            validate_set(elements[2])
+          end
         end
-        validate_run(elements[2])
-        return elements
+
+       return elements
       end
     end
   end

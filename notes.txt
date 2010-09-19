@@ -1,41 +1,33 @@
-cards = [7, 8, 2, 10]
+
+def lay_down
+  discard unless current_player.win?
+
+  if current_player.win?
+    start_new_hand
+  else
+    switch_players
+  end
+end
 
 
-[7,8, 10]
-[2]
+def discard
+  current_player.discard
+  if current_player.win?
+    start_new_hand
+  end
+end
 
+def start_new_hand
+  @current_player = #next player whose turn it is to start a hand
+end
 
+class Player
+  def win
+    @cards_in_hand.empty?
+  end
+end
 
-
-
-
-
-
-
-[7,8,10]
-
-7
-  sorted_cards[0+1] = 7 => OK
-
-  4+1 = 5; 5 != 7
-
-  
-  twos.shift.  OK
-
-7 => OH ok it goes to the next thing in the array, not the next integer value
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+== To test a win
+* player's hand is empty
+* player can have a status: won hand
+* 0 points gained
